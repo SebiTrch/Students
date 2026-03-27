@@ -11,7 +11,25 @@ public class Main {
 
         Map<Integer, Students> mapStudenti = citesteStudenti(fisierStudenti);
         citesteNote(fisierNote, mapStudenti);
-        afisare(mapStudenti);
+
+        float notaM = gasesteNota("Bianca", "Popescu", mapStudenti);
+        float notaN = gasesteNota("Ioan", "Popa", mapStudenti);
+
+        System.out.println(notaM);
+        System.out.println(notaN);
+    }
+
+    public static float gasesteNota(String prenume, String nume, Map<Integer, Students> tineri) {
+        HashMap<String, Students> mapCautare = new HashMap<>();
+        for (Students s : tineri.values()) {
+            mapCautare.put(s.getPrenume().trim() + "-" + s.getNume().trim(), s);
+        }
+
+        String cheie = prenume.trim() + "-" + nume.trim();
+        if (mapCautare.containsKey(cheie)) {
+            return (float) mapCautare.get(cheie).getNota();
+        }
+        return 0.0f;
     }
 
     public static Map<Integer, Students> citesteStudenti(String fisier) {
@@ -26,10 +44,10 @@ public class Main {
                     String[] parts = line.split(",");
 
                     if (parts.length == 4) {
-                        int id = Integer.parseInt(parts[0]);
-                        String prenume = parts[1];
-                        String nume = parts[2];
-                        String grupa = parts[3];
+                        int id = Integer.parseInt(parts[0].trim());
+                        String prenume = parts[1].trim();
+                        String nume = parts[2].trim();
+                        String grupa = parts[3].trim();
 
                         mapStudenti.put(id, new Students(id, prenume, nume, grupa));
                     }
@@ -37,7 +55,7 @@ public class Main {
             }
             sc.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Eroare");
+            System.out.println("Eroare .");
         }
         return mapStudenti;
     }
@@ -53,8 +71,8 @@ public class Main {
                     String[] parts = line.split(",");
 
                     if (parts.length == 2) {
-                        int id = Integer.parseInt(parts[0]);
-                        double nota = Double.parseDouble(parts[1]);
+                        int id = Integer.parseInt(parts[0].trim());
+                        double nota = Double.parseDouble(parts[1].trim());
 
                         if (mapStudenti.containsKey(id)) {
                             mapStudenti.get(id).setNota(nota);
@@ -64,13 +82,7 @@ public class Main {
             }
             sc.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Eroare");
-        }
-    }
-
-    public static void afisare(Map<Integer, Students> mapStudenti) {
-        for (Map.Entry<Integer, Students> entry : mapStudenti.entrySet()) {
-            System.out.println(entry.getValue());
+            System.out.println("Eroare.");
         }
     }
 }
