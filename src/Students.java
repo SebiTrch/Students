@@ -1,57 +1,42 @@
 import java.util.Objects;
 
 public class Students {
-    int id;
-    String prenume;
-    String nume;
-    String grupa;
-    double nota;
+    private final int id;
+    private final String prenume;
+    private final String nume;
+    private final String grupa;
+    private final double nota;
 
-    public Students(int id, String prenume, String nume, String grupa) {
+    public Students(int id, String prenume, String nume, String grupa, double nota) {
         this.id = id;
         this.prenume = prenume;
         this.nume = nume;
         this.grupa = grupa;
+        this.nota = nota;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNume() {
         return nume;
-    }
-
-    public void setNume(String nume) {
-        this.nume = nume;
     }
 
     public String getPrenume() {
         return prenume;
     }
 
-    public void setPrenume(String prenume) {
-        this.prenume = prenume;
-    }
-
     public String getGrupa() {
         return grupa;
-    }
-
-    public void setGrupa(String grupa) {
-        this.grupa = grupa;
     }
 
     public double getNota() {
         return nota;
     }
 
-    public void setNota(double nota) {
-        this.nota = nota;
+    public Students mutaInGrupa(String nouaGrupa) {
+        return new Students(this.id, this.prenume, this.nume, nouaGrupa, this.nota);
     }
 
     @Override

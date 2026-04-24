@@ -15,13 +15,14 @@ public class Main {
         String fisierNote = "note_anon.txt";
 
         Map<Integer, Students> mapStudenti = citesteStudenti(fisierStudenti);
-        citesteNote(fisierNote, mapStudenti);
+        mapStudenti = citesteNote(fisierNote, mapStudenti);
 
         float notaM = gasesteNota("Bianca", "Popescu", mapStudenti);
         float notaN = gasesteNota("Ioan", "Popa", mapStudenti);
-        System.out.printf("Notele anonime sunt:\n");
-        System.out.println(notaM);
-        System.out.println(notaN);
+
+        System.out.println("Notele cautate sunt:");
+        System.out.println("Bianca Popescu: " + notaM);
+        System.out.println("Ioan Popa: " + notaN);
 
         List<StudentBursier> bursieri = new ArrayList<>();
         bursieri.add(new StudentBursier(1025, "Andrei", "Popa", "ISM141/2", 8.70, 725.50));
@@ -33,70 +34,52 @@ public class Main {
     }
 
     public static float gasesteNota(String prenume, String nume, Map<Integer, Students> tineri) {
-        HashMap<String, Students> mapCautare = new HashMap<>();
         for (Students s : tineri.values()) {
-            mapCautare.put(s.getPrenume().trim() + "-" + s.getNume().trim(), s);
-        }
-
-        String cheie = prenume.trim() + "-" + nume.trim();
-        if (mapCautare.containsKey(cheie)) {
-            return (float) mapCautare.get(cheie).getNota();
+            if (s.getPrenume().equalsIgnoreCase(prenume.trim()) &&
+                    s.getNume().equalsIgnoreCase(nume.trim())) {
+                return (float) s.getNota();
+            }
         }
         return 0.0f;
     }
 
     public static Map<Integer, Students> citesteStudenti(String fisier) {
-        Map<Integer, Students> mapStudenti = new HashMap<>();
-        try {
-            File file = new File(fisier);
-            Scanner sc = new Scanner(file);
-
+        Map<Integer, Students> harta = new HashMap<>();
+        try (Scanner sc = new Scanner(new File(fisier))) {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine().trim();
-                if (!line.isEmpty()) {
-                    String[] parts = line.split(",");
-
-                    if (parts.length == 4) {
-                        int id = Integer.parseInt(parts[0].trim());
-                        String prenume = parts[1].trim();
-                        String nume = parts[2].trim();
-                        String grupa = parts[3].trim();
-
-                        mapStudenti.put(id, new Students(id, prenume, nume, grupa));
-                    }
+                if (line.isEmpty()) continue;
+                String[] parts = line.split(",");
+                if (parts.length == 4) {
+                    int id = Integer.parseInt(parts[0].trim());
+                    harta.put(id, new Students(id, parts[1].trim(), parts[2].trim(), parts[3].trim(), 0.0));
                 }
             }
-            sc.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Eroare .");
+            System.out.println("Fisierul de studenti nu a fost gasit.");
         }
-        return mapStudenti;
+        return harta;
     }
 
-    public static void citesteNote(String fisier, Map<Integer, Students> mapStudenti) {
-        try {
-            File file = new File(fisier);
-            Scanner sc = new Scanner(file);
-
+    public static Map<Integer, Students> citesteNote(String fisier, Map<Integer, Students> mapStudenti) {
+        try (Scanner sc = new Scanner(new File(fisier))) {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine().trim();
-                if (!line.isEmpty()) {
-                    String[] parts = line.split(",");
-
-                    if (parts.length == 2) {
-                        int id = Integer.parseInt(parts[0].trim());
-                        double nota = Double.parseDouble(parts[1].trim());
-
-                        if (mapStudenti.containsKey(id)) {
-                            mapStudenti.get(id).setNota(nota);
-                        }
+                if (line.isEmpty()) continue;
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    int id = Integer.parseInt(parts[0].trim());
+                    double nota = Double.parseDouble(parts[1].trim());
+                    if (mapStudenti.containsKey(id)) {
+                        Students vechi = mapStudenti.get(id);
+                        mapStudenti.put(id, new Students(vechi.getId(), vechi.getPrenume(), vechi.getNume(), vechi.getGrupa(), nota));
                     }
                 }
             }
-            sc.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Eroare.");
+            System.out.println("Fisierul de note nu a fost gasit.");
         }
+        return mapStudenti;
     }
 
     public static void salvareInFisier(String numeFisier, List<StudentBursier> colectie) {

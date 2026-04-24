@@ -4,8 +4,8 @@ public class StudentBursier extends Students {
     private double cuantumBursa;
 
     public StudentBursier(int id, String prenume, String nume, String grupa, double nota, double cuantumBursa) {
-        super(id, prenume, nume, grupa);
-        super.nota= nota;
+        super(id, prenume, nume, grupa,nota);
+
         this.cuantumBursa = cuantumBursa;
     }
 public double getCuantumBursa() {
