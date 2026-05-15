@@ -1,0 +1,9 @@
+1025,Andrei,Popa,ISM141/2,8.7
+1024,Ioan,Mihalcea,ISM141/1,10.0
+1026,Anamaria,Prodan,TI131/1,8.9
+1029,Bianca,Popescu,TI131/1,10.0
+1029,Maria,Pana,TI131/2,4.1
+1029,Gabriela,Mohanu,TI131/2,7.33
+1029,Marius,Nasta,TI131/2,3.2
+1029,Marius,Nasta,TI131/1,5.12
+1029,Andrei,Dobrescu,TI131/2,2.22

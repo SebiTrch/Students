@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
+
         Map<Integer, Students> date = citesteStudenti("students_in.txt");
         date = citesteNote("note_anon.txt", date);
         List<Students> listaInitiala = new ArrayList<>(date.values());
@@ -19,7 +20,7 @@ public class Main {
         System.out.println("Studenti recuperati din Excel:");
         listaImportata.forEach(System.out::println);
 
-        List<Students> studentiCuNote = Arrays.asList(
+       List<Students> studentiCuNote = Arrays.asList(
                 new Students(1025, "Andrei", "Popa", "ISM141/2", 8.70),
                 new Students(1024, "Ioan", "Mihalcea", "ISM141/1", 10.0),
                 new Students(1026, "Anamaria", "Prodan", "TI131/1", 8.90),
